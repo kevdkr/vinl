@@ -43,7 +43,6 @@ const TransactionItem: React.FC<Props> = ({ transaction }) => (
         <Typography>
             <li>
             {transaction.accounts ? Object.entries(transaction.accounts).map(account => {
-                console.log(account[1]["is_comment"]);
                 if (account[1]["is_comment"] === false) {
                     return  (
                         <div>{account[1].name}      {account[1].amount}</div>

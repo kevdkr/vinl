@@ -1,4 +1,3 @@
-import * as React from "react";
 import { useForm, useFieldArray, useWatch, Control } from "react-hook-form";
 
 import Button from '@mui/material/Button';
@@ -13,6 +12,8 @@ import AddIcon from '@mui/icons-material/Add';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
+import Transaction from '../models/Transaction';
+import React, { useState, useEffect } from 'react';
 
 const fabStyle = {
   position: 'fixed',
@@ -34,8 +35,6 @@ type FormValues = {
   isComment: boolean;
 };
 
-let renderCount = 0;
-
 let today: Date = new Date();
 let dd: string = String(today.getDate()).padStart(2, '0');
 let mm: string = String(today.getMonth() + 1).padStart(2, '0');
@@ -43,8 +42,13 @@ let yyyy: string = String(today.getFullYear());
 
 let todayDate: string = yyyy + "/" + mm + "/" + dd;
 
-export default function FormDialog2() {
+type Props = {
+  saveTransaction: (formData: Transaction | any) => void
+}
+
+const FormDialog2: React.FC<Props> = ({ saveTransaction }) => {
   const [open, setOpen] = React.useState(false);
+  //const [transactions, setTransactions] = React.useState(transactionsPrev);
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -68,31 +72,14 @@ export default function FormDialog2() {
     control
   });
 
-  //const onSubmit = (data: FormValues) => console.log(data);
-
-  const onSubmit = async (data: FormValues) => {
-    console.log(JSON.stringify(data));
-    const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    };
-    try {
-      await fetch(
-        'transactions', requestOptions)
-        .then(response => {
-          response.json()
-            .then(data => {
-              console.log("Transaction added: ", data.date);
-            });
-        })
-    }
-    catch (error) {
-      console.error(error);
-    }
+  const onSubmit = (data: FormValues) => {
+    // fetch('transactions', {
+    //   method: 'POST',
+    //   body: JSON.stringify(data)
+    // })
+    saveTransaction(data)
+    handleClose();
   }
-
-  renderCount++;
 
   return (
     <div>
@@ -200,3 +187,5 @@ export default function FormDialog2() {
     </div>
   );
 }
+
+export default FormDialog2

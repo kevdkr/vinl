@@ -1,32 +1,3 @@
-//import logo from './logo.svg';
-//import './App.css';
-
-// function App() {
-//   return (
-//     <div className="App">
-//       <header className="App-header">
-//         <img src={logo} className="App-logo" alt="logo" />
-//         <p>
-//           Edit <code>src/App.js</code> and save to reload.
-//         </p>
-//         <a
-//           className="App-link"
-//           href="https://reactjs.org"
-//           target="_blank"
-//           rel="noopener noreferrer"
-//         >
-//           Learn React
-//         </a>
-//       </header>
-//     </div>
-//   );
-// }
-
-//export default App;
-
-import React from "react";
-//import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-
 import Navbar from './Navbar'
 import TransactionItem from './components/Transaction'
 import Transaction from './models/Transaction'
@@ -42,6 +13,8 @@ import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import BottomNav from "./components/BottomNav";
 import FormDialog2 from "./components/AddTransactionFormDialog2"
 
+import List from '@mui/material/List';
+import React, { useEffect, useState } from 'react'
 const darkTheme = createTheme({ palette: { mode: 'dark' } });
 const lightTheme = createTheme({ palette: { mode: 'light' } });
 
@@ -58,19 +31,67 @@ const fabStyle = {
   right: 30,
 };
 
-export default function App() {
+type FormValues = {
+  date: string;
+  payee: string;
+  payeeComment: string;
+  comment: string;
+  accounts: {
+    name: string;
+    amount: string;
+    comment: string;
+    //is_comment: boolean;
+  }[];
+  isComment: boolean;
+};
 
+export default function App() {
+  const [transactions, setTransactions] = useState<Transaction[]>([])
+
+  useEffect(() => {
+    getTransactions()
+  }, [])
+
+  const getTransactions = (): void => {
+    fetch("transactions")
+    //.then(({ data: { transactions } }: Transaction[] | any) => setTransactions(transactions))
+      .then(async (response) => {
+        if (response.ok) {
+          setTransactions(await response.json());
+        }
+      })
+    .catch((err: Error) => console.log(err))
+  }
+
+  const handleSaveTransaction = (formData: FormValues): void => {
+    //e.preventDefault()
+
+    fetch('transactions', {
+      method: 'POST',
+      body: JSON.stringify(formData)
+    })
+      .then(({ status }) => {
+        // if (status !== 201) {
+        //   throw new Error('Error! Transaction not saved')
+        // }
+        //setTransactions(data.transactions)
+        getTransactions()
+      })
+      .catch((err) => console.log(err))
+  }
 
   return (
     //<Router>
       //
     <ThemeProvider theme={darkTheme}>
       <Navbar />
-      <Transactions />
-      // <Fab sx={fabStyle} color="primary" aria-label="add">
-      //   <AddIcon />
-      // </Fab>
-      <FormDialog2 />
+      //<Transactions />
+      <div>
+      <List sx={{ flexGrow: 1, height: '100%', width: '100%', position: 'fixed', bgcolor: 'background.paper', overflow: 'auto' }}>
+          {transactions.map(transaction => <TransactionItem transaction={transaction} />)}
+      </List>
+      <FormDialog2 saveTransaction={handleSaveTransaction}/>
+      </div>
       <BottomNav />
     </ThemeProvider>
     //</Router>
