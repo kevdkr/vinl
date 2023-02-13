@@ -7,3 +7,5 @@ docker run --name postgres -e POSTGRES_USERNAME=postgres -e POSTGRES_PASSWORD=po
 
 sleep 5;
 psql -U postgres -h localhost -f ./init.sql
+
+go run .
