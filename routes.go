@@ -8,7 +8,6 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"strings"
 	"vinl/models"
 	"vinl/transfer"
 
@@ -21,7 +20,7 @@ func (s *Server) routes() {
 	s.router.HandleFunc("/transactions/{id}", s.handleGetTransactionById()).Methods(http.MethodGet)
 	//s.router.HandleFunc("/transactions/{id}/tofile", s.handleWriteTransactionToFile()).Methods(http.MethodGet)
 	s.router.HandleFunc("/transactionstofile", s.handleWriteTransactionsToFile()).Methods(http.MethodGet)
-	s.router.HandleFunc("/transactionsfromfile", s.handleReadTransactionsFromFile()).Methods(http.MethodGet)
+	s.router.HandleFunc("/transactionsfromfile", s.handleReadTransactionsFromFile()).Methods(http.MethodPost)
 	s.router.HandleFunc("/transactions/{id}", s.handleDeleteTransactionById()).Methods(http.MethodDelete)
 }
 
