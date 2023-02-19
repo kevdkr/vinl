@@ -1,10 +1,14 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
+	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
+	"strings"
 	"vinl/models"
 	"vinl/transfer"
 
@@ -116,9 +120,31 @@ func (s *Server) handleWriteTransactionsToFile() http.HandlerFunc {
 
 func (s *Server) handleReadTransactionsFromFile() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		transfer.TransferTransactionFromFile("ledger.dat", s.db)
+
+		if r.Method != http.MethodPost {
+			log.Printf("405 Method no allowed")
+			return
+		}
+
+		r.ParseMultipartForm(32 << 20)
+
+		var content []byte
+		file, _, err := r.FormFile("file")
+		if err != nil {
+			log.Printf("%v", err)
+		}
+		defer file.Close()
+
+		buf := bytes.NewBuffer(content)
+		io.Copy(buf, file)
+		fmt.Printf("%v", buf)
+		transfer.TransferTransactionFromFile(buf, s.db)
+
+		w.Header().Add("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
 	}
 }
+
 func checkError (err error) {
     if err != nil {
         log.Printf("%s", err)

@@ -2,13 +2,14 @@ package transfer
 
 import (
 	"bufio"
+	"bytes"
 	"database/sql"
 	"io"
-	"vinl/models"
 	"log"
 	"os"
 	"regexp"
 	"strings"
+	"vinl/models"
 )
 
 const (
@@ -61,16 +62,19 @@ func WriteTransactionsToFile(ts models.Transactions) {
 	}
 }
 
-func TransferTransactionFromFile(path string, db *sql.DB) {
-	file, err := os.Open(path)
-	if err != nil {
-		log.Printf("%v", err)
-	}
-	defer file.Close()
-	//scanner := bufio.NewScanner(file)
-	//scanner.Split(bufio.ScanLines)
+func TransferTransactionFromFile(buf *bytes.Buffer, db *sql.DB) {
+	//file, err := os.Open(path)
+	//if err != nil {
+	//	log.Printf("%v", err)
+	//}
+	//defer file.Close()
 
-	ts, err := parseFile(file)
+	content := buf.Bytes()
+	reader := bytes.NewReader(content)
+
+	scanner := bufio.NewScanner(reader)
+	scanner.Split(bufio.ScanLines)
+	ts, err := parseFile(reader)
 	if err != nil {
 		log.Printf("%v", err)
 	}
