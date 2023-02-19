@@ -11,20 +11,13 @@ import AddIcon from '@mui/icons-material/Add';
 import Paper from '@mui/material/Paper';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import BottomNav from "./components/BottomNav";
-import FormDialog2 from "./components/AddTransactionFormDialog2"
+import FormDialog from "./components/AddTransactionFormDialog"
 
 import List from '@mui/material/List';
 import React, { useEffect, useState } from 'react'
 const darkTheme = createTheme({ palette: { mode: 'dark' } });
 const lightTheme = createTheme({ palette: { mode: 'light' } });
 
-
-// const accountItem = new Account("1", "1", "name", "amount", "", false);
-// const accountList = new Array<Account>();
-// accountList.push(accountItem);
-// const transactionItem = new Transaction("1", "10-22-2022", "payee", "", "", accountList, false);
-
-      // <TransactionItem transaction = {transactionItem}/>
 const fabStyle = {
   position: 'fixed',
   bottom: 80,
@@ -80,20 +73,38 @@ export default function App() {
       .catch((err) => console.log(err))
   }
 
+  const handleDeleteTransaction = (id: string): void => {
+    fetch('transactions/' + id, {
+      method: 'DELETE',
+    })
+      .then((response) => {
+        getTransactions()
+        return response.json();
+      })
+      // .then(({ status }) => {
+      //   getTransactions()
+      // })
+      .catch((err) => console.log(err))
+  }
+
+  const saveTransactionsFromFile = (): void => {
+
+  }
+
   return (
-    //<Router>
-      //
     <ThemeProvider theme={darkTheme}>
       <Navbar />
-      //<Transactions />
       <div>
       <List sx={{ flexGrow: 1, height: '100%', width: '100%', position: 'fixed', bgcolor: 'background.paper', overflow: 'auto' }}>
-          {transactions.map(transaction => <TransactionItem transaction={transaction} />)}
+          {transactions.map(transaction =>
+            <TransactionItem
+                            key={transaction.id}
+                            transaction={transaction}
+                            deleteTransaction={handleDeleteTransaction}/>)}
       </List>
-      <FormDialog2 saveTransaction={handleSaveTransaction}/>
+      <FormDialog saveTransaction={handleSaveTransaction}/>
       </div>
       <BottomNav />
     </ThemeProvider>
-    //</Router>
   );
 }
