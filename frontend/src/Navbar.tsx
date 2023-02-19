@@ -6,6 +6,8 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
+import FileUploadIcon from '@mui/icons-material/FileUpload';
+import FileUpload from './components/FileUpload';
 
 export default function ButtonAppBar() {
   return (
@@ -24,6 +26,7 @@ export default function ButtonAppBar() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Transactions
           </Typography>
+          <FileUpload />
         </Toolbar>
       </AppBar>
     </Box>
