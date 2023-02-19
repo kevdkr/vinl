@@ -9,15 +9,18 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import List from '@mui/material/List';
 
 import Transaction from '../models/Transaction'
 import Account from '../models/Account'
 import { CardActionArea, Divider, Fab } from '@mui/material';
 import Container from '@mui/material/Container';
 import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 type Props = {
-  transaction: Transaction;
+  transaction: Transaction
+  deleteTransaction: (id: string | any) => void
 }
 
 const editButtonStyle = {
@@ -26,8 +29,19 @@ const editButtonStyle = {
     right: 16,
 }
 
-const TransactionItem: React.FC<Props> = ({ transaction }) => (
+const deleteButtonStyle = {
+    position: 'absolute',
+    bottom: 16,
+    right: 72,
+}
 
+const TransactionItem: React.FC<Props> = ({ transaction, deleteTransaction }) => {
+
+    const handleClickDelete = (id: string) => {
+        deleteTransaction(id);
+    }
+
+    return (
     <Card sx={{ minWidth: 275 }}>
         <CardActionArea>
       <CardContent>
@@ -41,15 +55,15 @@ const TransactionItem: React.FC<Props> = ({ transaction }) => (
           {transaction.comment}
         </Typography>
         <Typography>
-            <li>
+            <List>
             {transaction.accounts ? Object.entries(transaction.accounts).map(account => {
                 if (account[1]["is_comment"] === false) {
                     return  (
-                        <div>{account[1].name}      {account[1].amount}</div>
+                        <div key={account[1].id}>{account[1].name}      {account[1].amount}</div>
                     )
                 }
             }): null}
-            </li>
+            </List>
         </Typography>
 
         <Fab
@@ -61,10 +75,24 @@ const TransactionItem: React.FC<Props> = ({ transaction }) => (
             onClick={event => {
               event.stopPropagation();
               event.preventDefault();
-              console.log("Button clicked");
             }}
         >
             <EditIcon />
+        </Fab>
+
+        <Fab
+            sx={deleteButtonStyle}
+            size="small"
+            color="primary"
+            aria-label="delete"
+            onMouseDown={event => event.stopPropagation()}
+            onClick={event => {
+                event.stopPropagation();
+                event.preventDefault();
+                handleClickDelete(transaction.id);
+            }}
+        >
+            <DeleteIcon />
         </Fab>
       </CardContent>
 
@@ -72,23 +100,6 @@ const TransactionItem: React.FC<Props> = ({ transaction }) => (
 
     <Divider />
     </Card>
-    // <ListItemButton>
-    //     <ListItemText sx={{ fontSize: 14 }}
-    //         color="text.secondary"
-    //         primary={transaction.date}
-    //         secondary={transaction.payee}
-    //     >
-    //     </ListItemText>
-    //     <ListItemText color="text.secondary">
-    //       {transaction.payee}
-    //     </ListItemText>
-    //     <ListItemText sx={{ mb: 1.5 }} color="white">
-    //       {transaction.comment}
-    //     </ListItemText>
-    //     <ListItemText>
-    //       account
-    //     </ListItemText>
-    // </ListItemButton>
 );
-
+}
 export default TransactionItem;
