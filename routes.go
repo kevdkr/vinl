@@ -18,6 +18,7 @@ func (s *Server) routes() {
 	//s.router.HandleFunc("/transactions/{id}/tofile", s.handleWriteTransactionToFile()).Methods(http.MethodGet)
 	s.router.HandleFunc("/transactionstofile", s.handleWriteTransactionsToFile()).Methods(http.MethodGet)
 	s.router.HandleFunc("/transactionsfromfile", s.handleReadTransactionsFromFile()).Methods(http.MethodGet)
+	s.router.HandleFunc("/transactions/{id}", s.handleDeleteTransactionById()).Methods(http.MethodDelete)
 }
 
 func (s *Server) handleAddTransaction() http.HandlerFunc {
@@ -74,6 +75,22 @@ func (s *Server) handleGetTransactionById() http.HandlerFunc {
 		w.Header().Add("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
 		json.NewEncoder(w).Encode(transaction)
+	}
+}
+
+func (s *Server) handleDeleteTransactionById() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodDelete {
+			log.Printf("405 Method no allowed")
+			return
+		}
+		vars := mux.Vars(r)
+		id := vars["id"]
+
+		var transaction models.Transaction
+		transaction.DeleteTransactionById(s.db, id)
+		w.Header().Add("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
 	}
 }
 

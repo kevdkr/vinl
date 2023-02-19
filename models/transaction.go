@@ -186,6 +186,35 @@ func (t *Transaction) GetTransactionById(db *sql.DB, id string) Transaction {
 	return *t
 }
 
+func (t *Transaction) DeleteTransactionById(db *sql.DB, id string) {
+
+	transactionsAccountsDeleteQuery := "DELETE FROM transactions_accounts WHERE transaction_id = $1"
+	res, err := db.Exec(transactionsAccountsDeleteQuery, id)
+	checkError(err)
+	count, err := res.RowsAffected()
+	checkError(err)
+	log.Printf("Deleted %d transactions_accounts", count)
+
+	accountDeleteQuery := "DELETE FROM accounts WHERE transactionid = $1"
+	res, err = db.Exec(accountDeleteQuery, id)
+	checkError(err)
+	count, err = res.RowsAffected()
+	checkError(err)
+	log.Printf("Deleted %d accounts", count)
+
+
+	transactionDeleteQuery := "DELETE FROM transactions WHERE id = $1"
+	res, err = db.Exec(transactionDeleteQuery, id)
+	checkError(err)
+	count, err = res.RowsAffected()
+	checkError(err)
+	if count != 1 {
+		log.Printf("Error: 1 row was supposed to be deleted, but %d was deleted", count)
+	} else {
+		log.Printf("Deleted %d transactions", count)
+	}
+}
+
 func checkError(err error) {
 	if err != nil {
 		log.Printf("%s", err)
