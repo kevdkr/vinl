@@ -20,8 +20,8 @@ func (s *Server) routes() {
 	s.router.HandleFunc("/transactions/{id}", s.handleGetTransactionById()).Methods(http.MethodGet)
 	//s.router.HandleFunc("/transactions/{id}/tofile", s.handleWriteTransactionToFile()).Methods(http.MethodGet)
 	s.router.HandleFunc("/transactionstofile", s.handleWriteTransactionsToFile()).Methods(http.MethodGet)
-	s.router.HandleFunc("/transactionsfromfile", s.handleReadTransactionsFromFile()).Methods(http.MethodPost)
 	s.router.HandleFunc("/transactions/{id}", s.handleDeleteTransactionById()).Methods(http.MethodDelete)
+	s.router.HandleFunc("/uploadfile", s.handleReadTransactionsFromFile()).Methods(http.MethodPost)
 }
 
 func (s *Server) handleAddTransaction() http.HandlerFunc {
@@ -136,7 +136,6 @@ func (s *Server) handleReadTransactionsFromFile() http.HandlerFunc {
 
 		buf := bytes.NewBuffer(content)
 		io.Copy(buf, file)
-		fmt.Printf("%v", buf)
 		transfer.TransferTransactionFromFile(buf, s.db)
 
 		w.Header().Add("Content-Type", "application/json")
