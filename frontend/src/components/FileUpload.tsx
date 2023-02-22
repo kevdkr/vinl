@@ -10,6 +10,7 @@ import React, { useState, useEffect } from 'react';
 import { DialogContent } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
+import FileUploadService from "../services/FileUploadService";
 
 export default function FileUpload() {
     const [open, setOpen] = React.useState(false);
@@ -20,11 +21,21 @@ export default function FileUpload() {
         setOpen(false);
     };
 
-    const handleFileInput = () => {
+    const [files, setFiles] = useState<File>()
 
+    const handleFileInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { files } = event.target;
+        const selectedFiles = files as FileList;
+        setFiles(selectedFiles?.[0]);
     };
 
-  return (
+    const handleSubmit = () => {
+      if (!files) return;
+      FileUploadService.saveTransactionsFromFile(files);
+      handleClose();
+    };
+
+    return (
       <div>
       <Button onClick={handleClickOpen}>
         <FileUploadIcon />
@@ -34,9 +45,10 @@ export default function FileUpload() {
             <DialogTitle>Upload a Ledger file</DialogTitle>
             <DialogContent>
 
-          <input type="file" onChange={handleFileInput} />
+          <input type="file" onChange={handleFileInput}/>
+          <Button onClick={handleSubmit}>Submit</Button>
           </DialogContent>
           </Dialog>
           </div>
-  );
+    );
 }

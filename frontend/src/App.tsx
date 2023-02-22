@@ -45,15 +45,20 @@ export default function App() {
     getTransactions()
   }, [])
 
-  const getTransactions = (): void => {
-    fetch("transactions")
-    //.then(({ data: { transactions } }: Transaction[] | any) => setTransactions(transactions))
-      .then(async (response) => {
-        if (response.ok) {
-          setTransactions(await response.json());
-        }
-      })
-    .catch((err: Error) => console.log(err))
+  // const getTransactions = (): void => {
+  //   fetch("transactions")
+  //   //.then(({ data: { transactions } }: Transaction[] | any) => setTransactions(transactions))
+  //     .then(async (response) => {
+  //       if (response.ok) {
+  //         setTransactions(await response.json());
+  //       }
+  //     })
+  //   .catch((err: Error) => console.log(err))
+  // }
+  async function getTransactions() {
+    const response = await fetch("transactions");
+    setTransactions(await response.json());
+
   }
 
   const handleSaveTransaction = (formData: FormValues): void => {
@@ -79,16 +84,12 @@ export default function App() {
     })
       .then((response) => {
         getTransactions()
-        return response.json();
+        return response;
       })
       // .then(({ status }) => {
       //   getTransactions()
       // })
       .catch((err) => console.log(err))
-  }
-
-  const saveTransactionsFromFile = (): void => {
-
   }
 
   return (
