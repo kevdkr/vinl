@@ -177,10 +177,10 @@ const FormDialog: React.FC<Props> = ({ saveTransaction }) => {
         >
           Add Account
         </Button>
-      <Button onClick={handleSubmit(onSubmit)}>Submit</Button>
       </form>
       </DialogContent>
       <DialogActions>
+          <Button onClick={handleSubmit(onSubmit)}>Submit</Button>
           <Button onClick={handleClose}>Cancel</Button>
       </DialogActions>
       </Dialog>
