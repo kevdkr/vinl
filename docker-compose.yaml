@@ -1,0 +1,39 @@
+version: "3.8"
+services:
+  db:
+    image: postgres
+    container_name: db
+    environment:
+      - POSTGRES_USERNAME=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+  vinl-backend:
+    image: vinl-backend
+    container_name: vinl-backend
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USERNAME=vinl
+      - DB_PASSWORD=test
+      - DB_NAME=vinl
+      - DB_SSLMODE=disable
+    depends_on:
+      - db
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    restart: unless-stopped
+  vinl-frontend:
+    image: vinl-frontend
+    container_name: vinl-frontend
+    build:
+      context: ./frontend/
+      dockerfile: Dockerfile
+    ports:
+      - 3000:80
+    restart: unless-stopped
