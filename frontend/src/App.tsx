@@ -38,6 +38,8 @@ type FormValues = {
   isComment: boolean;
 };
 
+const api:string = 'http://localhost:3000/api/' // TODO extract this from being hard-coded
+
 export default function App() {
   const [transactions, setTransactions] = useState<Transaction[]>([])
 
@@ -56,7 +58,7 @@ export default function App() {
   //   .catch((err: Error) => console.log(err))
   // }
   async function getTransactions() {
-    const response = await fetch("transactions");
+    const response = await fetch(api + "transactions");
     setTransactions(await response.json());
 
   }
@@ -64,7 +66,7 @@ export default function App() {
   const handleSaveTransaction = (formData: FormValues): void => {
     //e.preventDefault()
 
-    fetch('transactions', {
+    fetch(api + 'transactions', {
       method: 'POST',
       body: JSON.stringify(formData)
     })
@@ -79,7 +81,7 @@ export default function App() {
   }
 
   const handleDeleteTransaction = (id: string): void => {
-    fetch('transactions/' + id, {
+    fetch(api + 'transactions/' + id, {
       method: 'DELETE',
     })
       .then((response) => {

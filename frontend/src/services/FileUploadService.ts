@@ -1,7 +1,8 @@
+const api:string = 'http://localhost:3000/api/' // TODO extract this from being hard-coded
 const saveTransactionsFromFile = (file: File): void => {
     const formData = new FormData();
     formData.append("file", file);
-    fetch('uploadfile', {
+    fetch(api + 'uploadfile', {
       method: 'POST',
       body: formData
     })
