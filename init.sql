@@ -1,5 +1,7 @@
 CREATE USER vinl WITH PASSWORD 'test';
 CREATE DATABASE vinl OWNER vinl;
+GRANT ALL PRIVILEGES ON DATABASE vinl TO vinl;
+\connect vinl vinl
 CREATE TABLE IF NOT EXISTS transactions (
        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
        date VARCHAR(10) NOT NULL,
