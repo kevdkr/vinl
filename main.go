@@ -1,6 +1,6 @@
 package main
 
-import "github.com/gorilla/mux"
+import "os"
 
 // func main() {
 // 	s := &Server{connectDB(), mux.NewRouter()}
@@ -13,19 +13,17 @@ import "github.com/gorilla/mux"
 
 
 func main() {
-	s := Server{connectDB(), mux.NewRouter()}
+	s := Server{}
+	s.Initialize(
+		os.Getenv("DB_HOST"),
+		os.Getenv("DB_PORT"),
+		os.Getenv("DB_USERNAME"),
+		os.Getenv("DB_PASSWORD"),
+		os.Getenv("DB_NAME"),
+		os.Getenv("DB_SSLMODE"),
+	)
+
 	defer s.db.Close()
-	//s.Initialize(
-		//os.Getenv("DB_USERNAME"),
-		//os.Getenv("DB_PASSWORD"),
-		//os.Getenv("DB_NAME"),
-	//	"localhost",
-	//	5432,
-	//	"postgres",
-	//	"postgres",
-	//	"postgres",
-	//	"disable",
-	//)
 	s.routes()
 	s.Run(":8080")
 }
