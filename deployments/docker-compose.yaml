@@ -9,7 +9,7 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ../init.sql:/docker-entrypoint-initdb.d/init.sql
   vinl-backend:
     image: vinl-backend
     container_name: vinl-backend
@@ -23,8 +23,8 @@ services:
     depends_on:
       - db
     build:
-      context: ./
-      dockerfile: Dockerfile
+      context: ../
+      dockerfile: ./build/Dockerfile
     ports:
       - 8080:8080
     restart: unless-stopped
@@ -32,8 +32,8 @@ services:
     image: vinl-frontend
     container_name: vinl-frontend
     build:
-      context: ./frontend/
-      dockerfile: Dockerfile
+      context: ../frontend/
+      dockerfile: ../build/Dockerfile-frontend
     ports:
       - 3000:80
     restart: unless-stopped
