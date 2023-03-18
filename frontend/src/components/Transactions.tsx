@@ -1,5 +1,4 @@
 import Transaction from '../models/Transaction'
-import TransactionService from '../services/transaction.service'
 import TransactionItem from './Transaction'
 import React, { useState, useEffect } from 'react';
 

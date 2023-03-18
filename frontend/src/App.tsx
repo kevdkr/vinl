@@ -4,7 +4,7 @@ import Transaction from './models/Transaction'
 import Transactions from './components/Transactions'
 import Account from './models/Account'
 
-import TransactionService from './services/transaction.service'
+import TransactionService from './services/TransactionService'
 
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
@@ -12,7 +12,8 @@ import Paper from '@mui/material/Paper';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import BottomNav from "./components/BottomNav";
 import FormDialog from "./components/AddTransactionFormDialog"
-
+import Box from '@mui/material/Box';
+import { FixedSizeList, ListChildComponentProps } from 'react-window';
 import List from '@mui/material/List';
 import React, { useEffect, useState } from 'react'
 const darkTheme = createTheme({ palette: { mode: 'dark' } });
@@ -92,13 +93,13 @@ export default function App() {
       //   getTransactions()
       // })
       .catch((err) => console.log(err))
+
   }
 
   return (
     <ThemeProvider theme={darkTheme}>
       <Navbar />
-      <div>
-      <List sx={{ flexGrow: 1, height: '100%', width: '100%', position: 'fixed', bgcolor: 'background.paper', overflow: 'auto' }}>
+      <List sx={{ height: '87%', width: '100%', position: 'fixed', bgcolor: 'background.paper', overflow: 'auto' }}>
           {transactions.map(transaction =>
             <TransactionItem
                             key={transaction.id}
@@ -106,7 +107,6 @@ export default function App() {
                             deleteTransaction={handleDeleteTransaction}/>)}
       </List>
       <FormDialog saveTransaction={handleSaveTransaction}/>
-      </div>
       <BottomNav />
     </ThemeProvider>
   );
