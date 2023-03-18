@@ -4,8 +4,6 @@ import Transaction from './models/Transaction'
 import Transactions from './components/Transactions'
 import Account from './models/Account'
 
-import TransactionService from './services/TransactionService'
-
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import Paper from '@mui/material/Paper';
