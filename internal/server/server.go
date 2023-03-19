@@ -1,4 +1,4 @@
-package main
+package server
 
 import (
 	"database/sql"
@@ -33,8 +33,10 @@ func (s *Server) Initialize(host string, port string, user string, password stri
 	log.Printf("Connected to db %s", host)
 
 	s.router = mux.NewRouter()
+	s.routes()
 }
 
 func (s *Server) Run(addr string) {
+	defer s.db.Close()
 	log.Fatalln(http.ListenAndServe(addr, s.router))
 }
