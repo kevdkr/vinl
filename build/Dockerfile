@@ -4,7 +4,7 @@ WORKDIR /app
 COPY go.* ./
 RUN go mod download
 COPY . /app
-RUN go build -o /vinl
+RUN go build -o /vinl ./cmd/vinl
 
 FROM scratch
 
