@@ -7,8 +7,8 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"vinl/models"
-	"vinl/transfer"
+	"vinl/internal/models"
+	"vinl/internal/transfer"
 
 	"github.com/gorilla/mux"
 )

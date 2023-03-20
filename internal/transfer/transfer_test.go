@@ -2,7 +2,7 @@ package transfer
 
 import (
 	"bytes"
-	"vinl/models"
+	"vinl/internal/models"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"

@@ -9,7 +9,7 @@ import (
 	"os"
 	"regexp"
 	"strings"
-	"vinl/models"
+	"vinl/internal/models"
 )
 
 const (
