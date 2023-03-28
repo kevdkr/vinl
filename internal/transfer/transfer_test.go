@@ -2,8 +2,8 @@ package transfer
 
 import (
 	"bytes"
-	"vinl/internal/models"
 	"testing"
+	"vinl/internal/models"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -165,9 +165,12 @@ func TestParseFile(t *testing.T) {
 `; test comment at top
 2022/08/16 * Electric Bill  ; test comment in line
     Expenses:Utilities:Electricity    $1.59
-	Liabilities:CreditCard
+    Liabilities:CreditCard
 ; test ;test2sameline
-; test3newline`),
+; test3newline
+
+; test 4 unrelated
+; test 5 unrelated`),
 			expected: &models.Transactions{
 				models.Transaction{
 					Date: "2022/08/16",
@@ -195,6 +198,7 @@ func TestParseFile(t *testing.T) {
 					Payee: "",
 					PayeeComment: "",
 					Comment: 	"; test 4 unrelated\n; test 5 unrelated\n",
+					Accounts: []models.Account{},
 					IsComment: true,
 				},
 			},
@@ -220,7 +224,8 @@ func TestParseFile(t *testing.T) {
 		}
 		//if ts != tc.expected {
 		if !cmp.Equal(ts, tc.expected) {
-			t.Logf("Transactions don't match:\nactual: %+v\n\n expected: %+v\n", ts, tc.expected)
+			//t.Logf("Transactions don't match:\nactual:\n %+v\n\n expected:\n %+v\n", ts, tc.expected)
+			t.Logf("\nTrancations do not match:\n%v", cmp.Diff(ts, tc.expected))
 			t.Fail()
 		}
 	}
