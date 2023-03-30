@@ -8,6 +8,9 @@ import (
 
 	"github.com/gorilla/mux"
 
+	"vinl/internal/service"
+	"vinl/internal/storage/postgres"
+
 	_ "github.com/lib/pq"
 )
 
@@ -33,7 +36,11 @@ func (s *Server) Initialize(host string, port string, user string, password stri
 	log.Printf("Connected to db %s", host)
 
 	s.router = mux.NewRouter()
-	s.routes()
+	//s.routes()
+
+	transactionStorage := postgres.NewPostgresTransactionStorage(s.db)
+	transactionService := service.NewTransactionService(transactionStorage)
+	s.registerTransactionRoutes(transactionService)
 }
 
 func (s *Server) Run(addr string) {
