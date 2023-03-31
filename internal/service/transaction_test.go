@@ -1,4 +1,4 @@
-package transfer
+package service
 
 import (
 	"bytes"

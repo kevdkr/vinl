@@ -1,32 +1,62 @@
-package transfer
+package service
 
 import (
 	"bufio"
 	"bytes"
-	"database/sql"
 	"io"
 	"log"
 	"os"
 	"regexp"
 	"strings"
 	"vinl/internal/models"
+	"vinl/internal/storage"
 )
 
-const (
-	ledgerdate = "\\d{4}\\/(0[1-9]|1[0-2])\\/\\d{2}"
-	ledgerpayeeclearedregex = "^[0-9]+[-/][-/.=0-9]+\\s-\\*\\s-+\\(([^)]+)\\s-+\\)?\\([^*].+?\\)\\s-*\\(;\\|$\\)"
-	ledgeraccountnameregex = "\\(?1:[^][(); \t\r\n]+\\(?: [^][(); \t\r\n]+\\)*\\)"
-	ledgeraccountamountregex = "-?[0-9][0-9,]*[.]?[0-9]*"
-	myaccountnameregex = "[a-zA-Z0-9:]+[ ]?[a-zA-Z0-9:]+"
-	myaccountnameregexincludeparenthesis = "[(]?[a-zA-Z0-9:]+[ ]?[a-zA-Z0-9:]+[)]?"
-	myaccountamountregex = " {2,}\\$?-?[0-9][0-9,]*[.]?[0-9]*"
-	myaccountamountregexwithexpressions = " {2,}[(]?\\$?-?[0-9][0-9,]*[.]?[0-9]* ?[+-/*]? ?\\$?-?[0-9][0-9,]*[.]?[0-9]*[)]?"
-	myaccountamountregexwithmultiexpressions = " {2,}[(]?\\$?-?[0-9][0-9,]*[.]?[0-9]*( ?[\\+\\-\\/\\*]? ?\\$?-?[0-9][0-9,]*[.]?[0-9]*){0,}[)]?"
-	myaccountamountregexwithmultiexpressionsandhandlestockvalues = " {2,}[(]?\\$?-?[0-9][0-9,]*[.]?[0-9]*( ?[\\+\\-\\/\\*]? ?\\$?-?[0-9][0-9,]*[.]?[0-9]*){0,}[)]?[^;]*"
-	mycommentregex = ";{1,}.*"
-)
+type TransactionService struct {
+	storage storage.TransactionStorage
+}
 
-func WriteTransactionsToFile(ts models.Transactions) {
+func NewTransactionService(transactionStorage storage.TransactionStorage) *TransactionService {
+	return &TransactionService{transactionStorage}
+}
+
+func (s *TransactionService) GetTransactionById(id string) (*models.Transaction, error) {
+	transaction, err := s.storage.GetTransactionById(id)
+	if err != nil {
+		return nil, err
+	}
+	return transaction, nil
+}
+
+func (s *TransactionService) GetTransactions() (*models.Transactions, error) {
+
+	transactions, err := s.storage.GetTransactions()
+	if err != nil {
+		return nil, err
+	}
+
+	return transactions, nil
+}
+
+func (s *TransactionService) CreateTransaction(t *models.Transaction) error {
+	return s.storage.CreateTransaction(t)
+}
+
+func (s *TransactionService) CreateTransactions(transactions *models.Transactions) error {
+	for _, t := range *transactions {
+		err := s.CreateTransaction(&t)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (s *TransactionService) DeleteTransactionById(id string) error {
+	return s.storage.DeleteTransactionById(id)
+}
+
+func (s *TransactionService) TransferTransactionsToFile(ts *models.Transactions) error {
 	f, err := os.Create("ledger.dat")
 	if err != nil {
 		log.Printf("%s", err)
@@ -34,7 +64,7 @@ func WriteTransactionsToFile(ts models.Transactions) {
 
 	defer f.Close()
 
-	for _, t := range ts {
+	for _, t := range *ts {
 		if t.IsComment == false {
 
 			f.WriteString(t.Date + " * ")
@@ -56,18 +86,15 @@ func WriteTransactionsToFile(ts models.Transactions) {
 			f.WriteString(t.Comment + "\n")
 			//}
 			if err != nil {
-				log.Fatal(err)
+				log.Fatal(err) //TODO return errors
 			}
 		}
 	}
+
+	return nil
 }
 
-func TransferTransactionFromFile(buf *bytes.Buffer, db *sql.DB) {
-	//file, err := os.Open(path)
-	//if err != nil {
-	//	log.Printf("%v", err)
-	//}
-	//defer file.Close()
+func (s *TransactionService) TransferTransactionFromFile(buf *bytes.Buffer) error {
 
 	content := buf.Bytes()
 	reader := bytes.NewReader(content)
@@ -79,8 +106,22 @@ func TransferTransactionFromFile(buf *bytes.Buffer, db *sql.DB) {
 		log.Printf("%v", err)
 	}
 
-	ts.SaveTransactions(db)
+	return s.CreateTransactions(ts)
 }
+
+const (
+	ledgerdate = "\\d{4}\\/(0[1-9]|1[0-2])\\/\\d{2}"
+	ledgerpayeeclearedregex = "^[0-9]+[-/][-/.=0-9]+\\s-\\*\\s-+\\(([^)]+)\\s-+\\)?\\([^*].+?\\)\\s-*\\(;\\|$\\)"
+	ledgeraccountnameregex = "\\(?1:[^][(); \t\r\n]+\\(?: [^][(); \t\r\n]+\\)*\\)"
+	ledgeraccountamountregex = "-?[0-9][0-9,]*[.]?[0-9]*"
+	myaccountnameregex = "[a-zA-Z0-9:]+[ ]?[a-zA-Z0-9:]+"
+	myaccountnameregexincludeparenthesis = "[(]?[a-zA-Z0-9:]+[ ]?[a-zA-Z0-9:]+[)]?"
+	myaccountamountregex = " {2,}\\$?-?[0-9][0-9,]*[.]?[0-9]*"
+	myaccountamountregexwithexpressions = " {2,}[(]?\\$?-?[0-9][0-9,]*[.]?[0-9]* ?[+-/*]? ?\\$?-?[0-9][0-9,]*[.]?[0-9]*[)]?"
+	myaccountamountregexwithmultiexpressions = " {2,}[(]?\\$?-?[0-9][0-9,]*[.]?[0-9]*( ?[\\+\\-\\/\\*]? ?\\$?-?[0-9][0-9,]*[.]?[0-9]*){0,}[)]?"
+	myaccountamountregexwithmultiexpressionsandhandlestockvalues = " {2,}[(]?\\$?-?[0-9][0-9,]*[.]?[0-9]*( ?[\\+\\-\\/\\*]? ?\\$?-?[0-9][0-9,]*[.]?[0-9]*){0,}[)]?[^;]*"
+	mycommentregex = ";{1,}.*"
+)
 
 func parseFile(reader io.Reader) (*models.Transactions, error){
 
