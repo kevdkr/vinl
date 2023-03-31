@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"io"
 	"log"
+	"os"
 	"regexp"
 	"strings"
 	"vinl/internal/models"
@@ -55,6 +56,44 @@ func (s *TransactionService) DeleteTransactionById(id string) error {
 	return s.storage.DeleteTransactionById(id)
 }
 
+func (s *TransactionService) TransferTransactionsToFile(ts *models.Transactions) error {
+	f, err := os.Create("ledger.dat")
+	if err != nil {
+		log.Printf("%s", err)
+	}
+
+	defer f.Close()
+
+	for _, t := range *ts {
+		if t.IsComment == false {
+
+			f.WriteString(t.Date + " * ")
+			f.WriteString(t.Payee + t.PayeeComment + "\n")
+			for _, a := range t.Accounts {
+				f.WriteString("    " + a.Name + "    ")
+				f.WriteString(" " + a.Amount + "  " + a.Comment + "\n")
+			}
+			//for _, comment := range t.Comment {
+			f.WriteString(t.Comment)
+			//}
+			f.WriteString("\n")
+			if err != nil {
+				log.Fatal(err)
+			}
+		} else {
+			//f.WriteString(t.Payee + "\n")
+			//for _, comment := range t.Comment {
+			f.WriteString(t.Comment + "\n")
+			//}
+			if err != nil {
+				log.Fatal(err) //TODO return errors
+			}
+		}
+	}
+
+	return nil
+}
+
 func (s *TransactionService) TransferTransactionFromFile(buf *bytes.Buffer) error {
 
 	content := buf.Bytes()
@@ -69,8 +108,6 @@ func (s *TransactionService) TransferTransactionFromFile(buf *bytes.Buffer) erro
 
 	return s.CreateTransactions(ts)
 }
-
-
 
 const (
 	ledgerdate = "\\d{4}\\/(0[1-9]|1[0-2])\\/\\d{2}"

@@ -8,7 +8,6 @@ import (
 	"log"
 	"net/http"
 	"vinl/internal/models"
-	"vinl/internal/transfer"
 	"vinl/internal/service"
 
 	"github.com/gorilla/mux"
@@ -114,9 +113,13 @@ func (h *TransactionHandler) HandleWriteTransactionsToFile() http.HandlerFunc {
 			log.Printf("error getting transactions %v", err)
 			return
 		}
-		transfer.WriteTransactionsToFile(*transactions)
+		//transfer.WriteTransactionsToFile(*transactions)
+		err = h.service.TransferTransactionsToFile(transactions)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+		}
 
-		//w.WriteHeader(http.StatusOK)
+		w.WriteHeader(http.StatusOK)
 
 		// if r.Method != http.MethodGet {
 		// 	log.Printf("405 Method not allowed")
