@@ -69,9 +69,9 @@ func (s *TransactionService) TransferTransactionsToFile(ts *models.Transactions)
 
 			f.WriteString(t.Date + " * ")
 			f.WriteString(t.Payee + t.PayeeComment + "\n")
-			for _, a := range t.Accounts {
-				f.WriteString("    " + a.Name + "    ")
-				f.WriteString(" " + a.Amount + "  " + a.Comment + "\n")
+			for _, p := range t.Postings {
+				f.WriteString("    " + p.Name + "    ")
+				f.WriteString(" " + p.Amount + "  " + p.Comment + "\n")
 			}
 			//for _, comment := range t.Comment {
 			f.WriteString(t.Comment)
@@ -144,7 +144,7 @@ func parseFile(reader io.Reader) (*models.Transactions, error){
 	}
 
 	var ts models.Transactions
-	var as []models.Account
+	var ps []models.Posting
 	var t models.Transaction
 
 	var line string
@@ -161,7 +161,7 @@ func parseFile(reader io.Reader) (*models.Transactions, error){
 				t.IsComment = true
 			}
 			ts = append(ts, t)
-			as = []models.Account{}
+			ps = []models.Posting{}
 			t = models.Transaction{}
 			continue
 		} else if (len(line) > 0) && (line[0:4] != "    ") {
@@ -190,32 +190,32 @@ func parseFile(reader io.Reader) (*models.Transactions, error){
 				//comment := commentregex.FindString(line)
 				t.Date = date
 				t.Payee = payee
-				t.Accounts = as
+				t.Postings = ps
 				//t.Comment = comment
 				t.PayeeComment = commentInLine
 			}
 		} else if (len(line) > 0) && (line[0:4] == "    ") {
 			if strings.HasPrefix(strings.TrimSpace(line), ";") {
 				name := strings.TrimSpace(line)
-				a := models.Account {
+				p := models.Posting {
 					Name: name,
 					IsComment: true,
 				}
-				as = append(as, a)
+				ps = append(ps, p)
 			} else if !strings.HasPrefix(strings.TrimSpace(line), ";") {
 				name := accountnameregex.FindString(line)
 				amount := amountregex.FindString(line)
 				amount = strings.Trim(amount, " ")
 				comment := commentregex.FindString(line)
-				a := models.Account {
+				p := models.Posting {
 					Name: name,
 					Amount: amount,
 					Comment: comment,
 				}
-				as = append(as, a)
+				ps = append(ps, p)
 			}
 		}
-		t.Accounts = as
+		t.Postings = ps
 	}
 	if t.Date == "" && t.Payee == "" { // TODO is this needed here and at the top?
 		t.IsComment = true
