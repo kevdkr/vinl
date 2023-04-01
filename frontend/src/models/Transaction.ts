@@ -1,4 +1,4 @@
-import Account from './Account'
+import Posting from './Posting'
 
 export default class Transaction {
     id: string;
@@ -6,7 +6,7 @@ export default class Transaction {
     payee: string;
     payeeComment: string;
     comment: string;
-    accounts: Account[];
+    postings: Posting[];
     isComment: boolean;
 
     constructor(
@@ -15,7 +15,7 @@ export default class Transaction {
         payee: string,
         payeeComment: string,
         comment: string,
-        accounts: Account[],
+        postings: Posting[],
         isComment: boolean
     ) {
         this.id = id;
@@ -23,7 +23,7 @@ export default class Transaction {
         this.payee = payee;
         this.payeeComment = payeeComment;
         this.comment = comment;
-        this.accounts = accounts;
+        this.postings = postings;
         this.isComment = isComment;
     }
 }

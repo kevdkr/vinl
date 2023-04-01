@@ -2,7 +2,7 @@ import Navbar from './Navbar'
 import TransactionItem from './components/Transaction'
 import Transaction from './models/Transaction'
 import Transactions from './components/Transactions'
-import Account from './models/Account'
+import Posting from './models/Posting'
 
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
@@ -28,7 +28,7 @@ type FormValues = {
   payee: string;
   payeeComment: string;
   comment: string;
-  accounts: {
+  postings: {
     name: string;
     amount: string;
     comment: string;

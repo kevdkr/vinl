@@ -1,4 +1,4 @@
-export default class Account {
+export default class Posting {
     id: string;
     transactionId: string;
     name: string;

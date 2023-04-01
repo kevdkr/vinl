@@ -26,7 +26,7 @@ type FormValues = {
   payee: string;
   payeeComment: string;
   comment: string;
-  accounts: {
+  postings: {
     name: string;
     amount: string;
     comment: string;
@@ -63,12 +63,12 @@ const FormDialog: React.FC<Props> = ({ saveTransaction }) => {
     formState: { errors }
   } = useForm<FormValues>({
     defaultValues: {
-      //accounts: [{ name: "test", amount: "20.00", comment: "test" }]
+      //postings: [{ name: "test", amount: "20.00", comment: "test" }]
     },
     mode: "onBlur"
   });
   const { fields, append, remove } = useFieldArray({
-    name: "accounts",
+    name: "postings",
     control
   });
 
@@ -115,17 +115,17 @@ const FormDialog: React.FC<Props> = ({ saveTransaction }) => {
         {fields.map((field, index) => {
           return (
             <div key={field.id}>
-              Account
+              Posting
               <section className={"section"} key={field.id}>
                 <FormControl fullWidth sx={{ m: 1 }}>
                   <InputLabel htmlFor="outlined-adornment-name">Name</InputLabel>
                   <OutlinedInput
                     id="outlined-adornment-name"
                     label="Name"
-                    {...register(`accounts.${index}.name` as const, {
+                    {...register(`postings.${index}.name` as const, {
                       required: true
                     })}
-                    className={errors?.accounts?.[index]?.name ? "error" : ""}
+                    className={errors?.postings?.[index]?.name ? "error" : ""}
                     defaultValue={field.name}
                   />
                 </FormControl>
@@ -136,11 +136,11 @@ const FormDialog: React.FC<Props> = ({ saveTransaction }) => {
                     startAdornment={<InputAdornment position="start">$</InputAdornment>}
                     label="Amount"
                     type="string"
-                    {...register(`accounts.${index}.amount` as const, {
+                    {...register(`postings.${index}.amount` as const, {
                       valueAsNumber: false,
                       required: false
                     })}
-                    className={errors?.accounts?.[index]?.amount ? "error" : ""}
+                    className={errors?.postings?.[index]?.amount ? "error" : ""}
                     defaultValue={field.amount}
                   />
                </FormControl>
@@ -150,11 +150,11 @@ const FormDialog: React.FC<Props> = ({ saveTransaction }) => {
                   id="outlined-adornment-comment"
                   label="Comment"
                   type="string"
-                  {...register(`accounts.${index}.comment` as const, {
+                  {...register(`postings.${index}.comment` as const, {
                     valueAsNumber: false,
                     required: false
                   })}
-                  className={errors?.accounts?.[index]?.comment ? "error" : ""}
+                  className={errors?.postings?.[index]?.comment ? "error" : ""}
                   defaultValue={field.comment}
                 />
               </FormControl>
@@ -175,7 +175,7 @@ const FormDialog: React.FC<Props> = ({ saveTransaction }) => {
             })
           }
         >
-          Add Account
+          Add Posting
         </Button>
       </form>
       </DialogContent>
