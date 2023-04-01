@@ -2,7 +2,7 @@ package models
 
 import "github.com/google/uuid"
 
-type Account struct {
+type Posting struct {
 	Id            uuid.UUID `json:"id"`
 	TransactionId uuid.UUID	`json:"transactionid"`
 	Name          string 	`json:"name"`
