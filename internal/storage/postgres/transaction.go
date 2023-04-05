@@ -15,9 +15,6 @@ type PostgresTransactionStorage struct {
 func NewPostgresTransactionStorage(db *sql.DB) *PostgresTransactionStorage {
 	return &PostgresTransactionStorage{db: db}
 }
-// type PostgresAccountStorage struct {
-// 	db *sql.DB
-// }
 
 func (storage *PostgresTransactionStorage) CreateTransaction(t *models.Transaction) (error) {
 	transactionQuery := "INSERT INTO transactions (date, payee, comment, payee_comment, is_comment) VALUES ($1, $2, $3, $4, $5) RETURNING id"
