@@ -15,13 +15,13 @@ CREATE TABLE IF NOT EXISTS accounts (
        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
        name VARCHAR(100) NOT NULL
 
-)
+);
+
 CREATE TABLE IF NOT EXISTS postings (
-       -- id SERIAL PRIMARY KEY,
        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
        transactionid UUID NOT NULL,
-       --name VARCHAR(100) NOT NULL,
-       accountid UUID NOT NULL,
+       name VARCHAR(100) NOT NULL,
+       --accountid UUID NOT NULL,
        amount VARCHAR(100),
        comment VARCHAR(200),
        is_comment BOOLEAN DEFAULT FALSE
