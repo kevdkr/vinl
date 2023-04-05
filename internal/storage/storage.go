@@ -11,4 +11,9 @@ type TransactionStorage interface {
 	DeleteTransactionById(id string) (error)
 }
 
-//type AccountStorage interface {}
+type AccountStorage interface {
+	GetAccounts() (*[]models.Account, error)
+	GetAccountById(id string) (*models.Account, error)
+	CreateAccount(account *models.Account) error
+	DeleteAccountById(id string) error
+}
