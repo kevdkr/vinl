@@ -12,7 +12,7 @@ import Typography from '@mui/material/Typography';
 import List from '@mui/material/List';
 
 import Transaction from '../models/Transaction'
-import Account from '../models/Account'
+import Posting from '../models/Posting'
 import { CardActionArea, Divider, Fab } from '@mui/material';
 import Container from '@mui/material/Container';
 import EditIcon from '@mui/icons-material/Edit';
@@ -56,10 +56,10 @@ const TransactionItem: React.FC<Props> = ({ transaction, deleteTransaction }) =>
         </Typography>
         <Typography>
             <List>
-            {transaction.accounts ? Object.entries(transaction.accounts).map(account => {
-                if (account[1]["is_comment"] === false) {
+            {transaction.postings ? Object.entries(transaction.postings).map(posting => {
+                if (posting[1]["is_comment"] === false) {
                     return  (
-                        <div key={account[1].id}>{account[1].name}      {account[1].amount}</div>
+                        <div key={posting[1].id}>{posting[1].name}      {posting[1].amount}</div>
                     )
                 }
             }): null}

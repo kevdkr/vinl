@@ -41,6 +41,9 @@ func (s *Server) Initialize(host string, port string, user string, password stri
 	transactionStorage := postgres.NewPostgresTransactionStorage(s.db)
 	transactionService := service.NewTransactionService(transactionStorage)
 	s.registerTransactionRoutes(transactionService)
+	accountStorage := postgres.NewPostgresAccountStorage(s.db)
+	accountService := service.NewAccountService(accountStorage)
+	s.registerAccountRoutes(accountService)
 }
 
 func (s *Server) Run(addr string) {

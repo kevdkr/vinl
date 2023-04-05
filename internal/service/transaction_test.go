@@ -26,7 +26,7 @@ func TestParseFile(t *testing.T) {
 					Payee:        "Transaction 1 At Store",
 					PayeeComment: "",
 					Comment:      "",
-					Accounts: []models.Account{
+					Postings: []models.Posting{
 						{
 							Name:      "Expenses:Groceries:Store",
 							Amount:    "$21.16",
@@ -57,7 +57,7 @@ func TestParseFile(t *testing.T) {
 					Payee:		"Loan",
 					PayeeComment: "",
 					Comment:	"",
-					Accounts: []models.Account{
+					Postings: []models.Posting{
 						{
 							Name:	"Liabilities:Loan",
 							Amount:	"$112.21",
@@ -92,7 +92,7 @@ func TestParseFile(t *testing.T) {
 					Payee:  "Check",
 					PayeeComment: "",
 					Comment: "",
-					Accounts: []models.Account{
+					Postings: []models.Posting{
 						{
 							Name: "Assets:Bank:Checking",
 							Amount: "$1.00",
@@ -124,7 +124,7 @@ func TestParseFile(t *testing.T) {
 					Payee: "Loan",
 					PayeeComment: "",
 					Comment: "",
-					Accounts: []models.Account{
+					Postings: []models.Posting{
 						{
 							Name: "Liabilities:Loan:Principal",
 							Amount: "$1.99",
@@ -177,7 +177,7 @@ func TestParseFile(t *testing.T) {
 					Payee: "Electric Bill  ",
 					PayeeComment: "; test comment in line",
 					Comment: "; test comment at top\n; test ;test2sameline\n; test3newline\n",
-					Accounts: []models.Account{
+					Postings: []models.Posting{
 						{
 							Name: "Expenses:Utilities:Electricity",
 							Amount: "$1.59",
@@ -198,7 +198,7 @@ func TestParseFile(t *testing.T) {
 					Payee: "",
 					PayeeComment: "",
 					Comment: 	"; test 4 unrelated\n; test 5 unrelated\n",
-					Accounts: []models.Account{},
+					Postings: []models.Posting{},
 					IsComment: true,
 				},
 			},

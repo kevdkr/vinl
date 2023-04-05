@@ -10,7 +10,7 @@ type Transaction struct {
 	Payee     string    `json:"payee"`
 	PayeeComment string `json:"payee_comment"`
 	Comment   string    `json:"comment"` // omitempty
-	Accounts  []Account `json:"accounts"`
+	Postings  []Posting `json:"postings"`
 	IsComment bool      `json:"is_comment"`
 }
 
