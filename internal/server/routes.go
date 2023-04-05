@@ -22,8 +22,18 @@ func (s *Server) registerTransactionRoutes(transactionService *service.Transacti
 	s.router.HandleFunc("/transactions", transactionHandler.HandleAddTransaction()).Methods(http.MethodPost)
 	s.router.HandleFunc("/transactions", transactionHandler.HandleGetTransactions()).Methods(http.MethodGet)
 	s.router.HandleFunc("/transactions/{id}", transactionHandler.HandleGetTransactionById()).Methods(http.MethodGet)
-	//s.router.HandleFunc("/transactions/{id}/tofile", s.handleWriteTransactionToFile()).Methods(http.MethodGet)
-	s.router.HandleFunc("/transactionstofile", transactionHandler.HandleWriteTransactionsToFile()).Methods(http.MethodGet)
 	s.router.HandleFunc("/transactions/{id}", transactionHandler.HandleDeleteTransactionById()).Methods(http.MethodDelete)
+	s.router.HandleFunc("/transactionstofile", transactionHandler.HandleWriteTransactionsToFile()).Methods(http.MethodGet)
 	s.router.HandleFunc("/uploadfile", transactionHandler.HandleReadTransactionsFromFile()).Methods(http.MethodPost)
+}
+
+func (s *Server) registerAccountRoutes(accountService *service.AccountService) {
+	accountHandler := handler.NewAccountHandler(accountService)
+
+	s.router.HandleFunc("/accounts", accountHandler.HandleAddAccount()).Methods(http.MethodPost)
+	s.router.HandleFunc("/accounts", accountHandler.HandleGetAccounts()).Methods(http.MethodGet)
+	s.router.HandleFunc("/accounts/{id}", accountHandler.HandleGetAccountById()).Methods(http.MethodGet)
+	s.router.HandleFunc("/accounts/{id}", accountHandler.HandleDeleteAccountById()).Methods(http.MethodDelete)
+	s.router.HandleFunc("/accounts/tofile", accountHandler.HandleWriteAccountsToFile()).Methods(http.MethodGet)
+	s.router.HandleFunc("/accounts/uploadfile", accountHandler.HandleReadAccountsFromFile()).Methods(http.MethodPost)
 }
