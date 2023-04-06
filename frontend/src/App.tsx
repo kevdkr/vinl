@@ -1,5 +1,6 @@
 import Navbar from './Navbar'
-import Transactions from './components/Transactions'
+import TransactionList from './components/TransactionList'
+import AccountList from './components/AccountList'
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import BottomNav from "./components/BottomNav";
 
@@ -10,7 +11,7 @@ export default function App() {
   return (
     <ThemeProvider theme={darkTheme}>
       <Navbar />
-      <Transactions />
+      <TransactionList />
       <BottomNav />
     </ThemeProvider>
   );
