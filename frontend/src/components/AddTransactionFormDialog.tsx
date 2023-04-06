@@ -14,25 +14,12 @@ import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Transaction from '../models/Transaction';
 import React, { useState, useEffect } from 'react';
+import { TransactionFormValues } from '../services/Transactions'
 
 const fabStyle = {
   position: 'fixed',
   bottom: 80,
   right: 30,
-};
-
-type FormValues = {
-  date: string;
-  payee: string;
-  payeeComment: string;
-  comment: string;
-  postings: {
-    name: string;
-    amount: string;
-    comment: string;
-    //is_comment: boolean;
-  }[];
-  isComment: boolean;
 };
 
 let today: Date = new Date();
@@ -61,7 +48,7 @@ const FormDialog: React.FC<Props> = ({ saveTransaction }) => {
     control,
     handleSubmit,
     formState: { errors }
-  } = useForm<FormValues>({
+  } = useForm<TransactionFormValues>({
     defaultValues: {
       //postings: [{ name: "test", amount: "20.00", comment: "test" }]
     },
@@ -72,7 +59,7 @@ const FormDialog: React.FC<Props> = ({ saveTransaction }) => {
     control
   });
 
-  const onSubmit = (data: FormValues) => {
+  const onSubmit = (data: TransactionFormValues) => {
     // fetch('transactions', {
     //   method: 'POST',
     //   body: JSON.stringify(data)
