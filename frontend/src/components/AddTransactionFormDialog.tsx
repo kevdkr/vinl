@@ -15,6 +15,10 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import Transaction from '../models/Transaction';
 import React, { useState, useEffect } from 'react';
 import { TransactionFormValues } from '../services/Transactions'
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Account from "../models/Account";
+import { getAccounts, createAccount } from '../services/Accounts';
+import MenuItem from '@mui/material/MenuItem';
 
 const fabStyle = {
   position: 'fixed',
@@ -60,13 +64,16 @@ const FormDialog: React.FC<Props> = ({ saveTransaction }) => {
   });
 
   const onSubmit = (data: TransactionFormValues) => {
-    // fetch('transactions', {
-    //   method: 'POST',
-    //   body: JSON.stringify(data)
-    // })
     saveTransaction(data)
     handleClose();
   }
+
+  const [accounts, setAccounts] = useState<Account[]>([])
+    useEffect(() => {
+        getAccounts().then((response) => {
+            setAccounts(response);
+        })
+    }, [])
 
   return (
     <div>
@@ -106,7 +113,7 @@ const FormDialog: React.FC<Props> = ({ saveTransaction }) => {
               <section className={"section"} key={field.id}>
                 <FormControl fullWidth sx={{ m: 1 }}>
                   <InputLabel htmlFor="outlined-adornment-name">Name</InputLabel>
-                  <OutlinedInput
+                  <Select
                     id="outlined-adornment-name"
                     label="Name"
                     {...register(`postings.${index}.name` as const, {
@@ -114,7 +121,9 @@ const FormDialog: React.FC<Props> = ({ saveTransaction }) => {
                     })}
                     className={errors?.postings?.[index]?.name ? "error" : ""}
                     defaultValue={field.name}
-                  />
+                  >
+                    {accounts.map(({ name }) => (<MenuItem value={name}>{name}</MenuItem>))}
+                  </Select>
                 </FormControl>
                 <FormControl fullWidth sx={{ m: 1 }}>
                   <InputLabel htmlFor="outlined-adornment-amount">Amount</InputLabel>
