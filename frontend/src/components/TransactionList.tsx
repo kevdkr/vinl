@@ -1,12 +1,12 @@
 import Transaction from '../models/Transaction'
-import TransactionItem from './Transaction'
+import TransactionItem from './TransactionItem'
 import React, { useState, useEffect } from 'react';
 
 import List from '@mui/material/List';
-import { getTransactions, createTransaction, deleteTransaction } from '../services/Transactions'
+import { getTransactions, createTransaction, deleteTransaction, TransactionFormValues } from '../services/Transactions'
 import FormDialog from "./AddTransactionFormDialog"
 
-const Transactions: React.FC = () => {
+const TransactionList: React.FC = () => {
 
     const [transactions, setTransactions] = useState<Transaction[]>([])
 
@@ -27,33 +27,29 @@ const Transactions: React.FC = () => {
             .catch((err) => console.log(err))
     }
 
-    type FormValues = {
-        date: string;
-        payee: string;
-        payeeComment: string;
-        comment: string;
-        postings: {
-            name: string;
-            amount: string;
-            comment: string;
-            //is_comment: boolean;
-        }[];
-        isComment: boolean;
-    };
-
-    const api:string = 'http://localhost:3000/api/'
-    const handleSaveTransaction = (formData: FormValues): void => { // TODO move transactions state variable into TransactionList component (parent) and pass down as props to Update/Delete, etc components
-        fetch(api + 'transactions', {
-            method: 'POST',
-            body: JSON.stringify(formData)
-        })
-        .then((response) => {
-            getTransactions().then((response) => {
-                setTransactions(response);
+    //const api:string = 'http://localhost:3000/api/'
+    /* const handleSaveTransaction = (formData: FormValues): void => { // TODO move transactions state variable into TransactionList component (parent) and pass down as props to Update/Delete, etc components
+     *     fetch(api + 'transactions', {
+     *         method: 'POST',
+     *         body: JSON.stringify(formData)
+     *     })
+     *     .then((response) => {
+     *         getTransactions().then((response) => {
+     *             setTransactions(response);
+     *         })
+     *         return response;
+     *     })
+     *     .catch((err) => console.log(err))
+     * } */
+    const handleSaveTransaction = (formData: TransactionFormValues): void => {
+        createTransaction(formData)
+            .then((response) => {
+                getTransactions().then((response) => {
+                    setTransactions(response);
+                })
+                return response;
             })
-            return response;
-        })
-        .catch((err) => console.log(err))
+            .catch((err) => console.log(err))
     }
 
     return (
@@ -70,4 +66,4 @@ const Transactions: React.FC = () => {
     )
 };
 
-export default Transactions;
+export default TransactionList;
