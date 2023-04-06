@@ -51,6 +51,9 @@ func (storage *PostgresAccountStorage) GetAccounts() (*[]models.Account, error) 
 		accounts = append(accounts, a)
 	}
 	//TODO handle if accounts has 0 rows
+	if accounts == nil {
+		return &[]models.Account{}, nil
+	}
 	return &accounts, nil
 }
 
