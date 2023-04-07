@@ -1,8 +1,9 @@
+import Account from './Account';
+
 export default class Posting {
     id: string;
     transactionId: string;
-    acountId: string;
-    name: string;
+    account: Account;
     amount: string;
     comment: string;
     is_comment: boolean;
@@ -10,16 +11,14 @@ export default class Posting {
     constructor(
         id: string,
         transactionId: string,
-        accountId: string,
-        name: string,
+        account: Account,
         amount: string,
         comment: string,
         is_comment: boolean
     ) {
         this.id = id;
         this.transactionId = transactionId;
-        this.acountId = accountId;
-        this.name = name;
+        this.account = account;
         this.amount = amount;
         this.comment = comment;
         this.is_comment = is_comment;

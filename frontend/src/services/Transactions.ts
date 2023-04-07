@@ -24,8 +24,10 @@ export type TransactionFormValues = {
   payeeComment: string;
   comment: string;
   postings: {
-    accountid: string;
-    name: string;
+    account: {
+      id: string;
+      name: string;
+    }
     amount: string;
     comment: string;
     //is_comment: boolean;

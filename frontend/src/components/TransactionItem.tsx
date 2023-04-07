@@ -59,7 +59,7 @@ const TransactionItem: React.FC<Props> = ({ transaction, deleteTransaction }) =>
             {transaction.postings ? Object.entries(transaction.postings).map(posting => {
                 if (posting[1]["is_comment"] === false) {
                     return  (
-                        <div key={posting[1].id}>{posting[1].name}      {posting[1].amount}</div>
+                        <div key={posting[1].account.id}>{posting[1].account.name}      {posting[1].amount}</div>
                     )
                 }
             }): null}

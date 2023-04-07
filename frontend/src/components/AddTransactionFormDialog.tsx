@@ -116,11 +116,11 @@ const FormDialog: React.FC<Props> = ({ saveTransaction }) => {
                   <Select
                     id="outlined-adornment-name"
                     label="Name"
-                    {...register(`postings.${index}.accountid` as const, {
+                    {...register(`postings.${index}.account.id` as const, {
                       required: true
                     })}
-                    className={errors?.postings?.[index]?.accountid ? "error" : ""}
-                    defaultValue={field.name}
+                    className={errors?.postings?.[index]?.account?.id ? "error" : ""}
+                    defaultValue={field.account.name}
                   >
                     {accounts.map(({ id, name }) => (<MenuItem key={id} value={id}>{name}</MenuItem>))}
                   </Select>
@@ -165,8 +165,10 @@ const FormDialog: React.FC<Props> = ({ saveTransaction }) => {
         <Button
           onClick={() =>
             append({
-              accountid: "",
-              name: "",
+              account: {
+                id: "",
+                name: "",
+              },
               amount: "",
               comment: "",
             })
@@ -181,8 +183,7 @@ const FormDialog: React.FC<Props> = ({ saveTransaction }) => {
           <Button onClick={handleClose}>Cancel</Button>
       </DialogActions>
       </Dialog>
-    </div>
-  );
+    </div>);
 }
 
 export default FormDialog
