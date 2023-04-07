@@ -70,7 +70,7 @@ func (s *TransactionService) TransferTransactionsToFile(ts *models.Transactions)
 			f.WriteString(t.Date + " * ")
 			f.WriteString(t.Payee + t.PayeeComment + "\n")
 			for _, p := range t.Postings {
-				f.WriteString("    " + p.Name + "    ")
+				f.WriteString("    " + p.Account.Name + "    ")
 				f.WriteString(" " + p.Amount + "  " + p.Comment + "\n")
 			}
 			//for _, comment := range t.Comment {
@@ -198,7 +198,9 @@ func parseFile(reader io.Reader) (*models.Transactions, error){
 			if strings.HasPrefix(strings.TrimSpace(line), ";") {
 				name := strings.TrimSpace(line)
 				p := models.Posting {
-					Name: name,
+					Account: models.Account{
+						Name: name,
+					},
 					IsComment: true,
 				}
 				ps = append(ps, p)
@@ -208,7 +210,9 @@ func parseFile(reader io.Reader) (*models.Transactions, error){
 				amount = strings.Trim(amount, " ")
 				comment := commentregex.FindString(line)
 				p := models.Posting {
-					Name: name,
+					Account: models.Account{
+						Name: name,
+					},
 					Amount: amount,
 					Comment: comment,
 				}

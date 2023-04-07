@@ -28,13 +28,17 @@ func TestParseFile(t *testing.T) {
 					Comment:      "",
 					Postings: []models.Posting{
 						{
-							Name:      "Expenses:Groceries:Store",
+							Account: models.Account{
+								Name:      "Expenses:Groceries:Store",
+							},
 							Amount:    "$21.16",
 							Comment:   "",
 							IsComment: false,
 						},
 						{
-							Name:		"Liabilities:CreditCard",
+							Account: models.Account{
+								Name:		"Liabilities:CreditCard",
+							},
 							Amount:		"",
 							Comment: 	"",
 							IsComment:	false,
@@ -59,19 +63,25 @@ func TestParseFile(t *testing.T) {
 					Comment:	"",
 					Postings: []models.Posting{
 						{
-							Name:	"Liabilities:Loan",
+							Account: models.Account{
+								Name:	"Liabilities:Loan",
+							},
 							Amount:	"$112.21",
 							Comment: "",
 							IsComment: false,
 						},
 						{
-							Name:   "(Expenses:Liabilities:LoanItem)",
+							Account: models.Account{
+								Name:   "(Expenses:Liabilities:LoanItem)",
+							},
 							Amount: "$112.21",
 							Comment: "",
 							IsComment: false,
 						},
 						{
-							Name: "Assets:Checking",
+							Account: models.Account{
+								Name: "Assets:Checking",
+							},
 							Amount: "",
 							Comment: "",
 							IsComment: false,
@@ -94,13 +104,17 @@ func TestParseFile(t *testing.T) {
 					Comment: "",
 					Postings: []models.Posting{
 						{
-							Name: "Assets:Bank:Checking",
+							Account: models.Account{
+								Name: "Assets:Bank:Checking",
+							},
 							Amount: "$1.00",
 							Comment: "; put in taxes / 401k / etc",
 							IsComment: false,
 						},
 						{
-							Name: "Income:Salary",
+							Account: models.Account{
+								Name: "Income:Salary",
+							},
 							Amount: "",
 							Comment: "",
 							IsComment: false,
@@ -126,31 +140,41 @@ func TestParseFile(t *testing.T) {
 					Comment: "",
 					Postings: []models.Posting{
 						{
-							Name: "Liabilities:Loan:Principal",
+							Account: models.Account{
+								Name: "Liabilities:Loan:Principal",
+							},
 							Amount: "$1.99",
 							Comment: "",
 							IsComment: false,
 						},
 						{
-							Name: "Expenses:Liabilities:Loan:Interest",
+							Account: models.Account{
+								Name: "Expenses:Liabilities:Loan:Interest",
+							},
 							Amount: "$5.99",
 							Comment: "",
 							IsComment: false,
 						},
 						{
-							Name: "Assets:UnappliedLoan",
+							Account: models.Account{
+								Name: "Assets:UnappliedLoan",
+							},
 							Amount: "$-10.67",
 							Comment: "",
 							IsComment: false,
 						},
 						{
-							Name: "(Expenses:Liabilities:Loan)",
+							Account: models.Account{
+								Name: "(Expenses:Liabilities:Loan)",
+							},
 							Amount: "($1.99 + $5.99 - $10.67)",
 							Comment: "",
 							IsComment: false,
 						},
 						{
-							Name: "Assets:Checking",
+							Account: models.Account{
+								Name: "Assets:Checking",
+							},
 							Amount: "$-10.68",
 							Comment: "",
 							IsComment: false,
@@ -179,13 +203,17 @@ func TestParseFile(t *testing.T) {
 					Comment: "; test comment at top\n; test ;test2sameline\n; test3newline\n",
 					Postings: []models.Posting{
 						{
-							Name: "Expenses:Utilities:Electricity",
+							Account: models.Account{
+								Name: "Expenses:Utilities:Electricity",
+							},
 							Amount: "$1.59",
 							Comment: "",
 							IsComment: false,
 						},
 						{
-							Name: "Liabilities:CreditCard",
+							Account: models.Account{
+								Name: "Liabilities:CreditCard",
+							},
 							Amount: "",
 							Comment: "",
 							IsComment: false,
