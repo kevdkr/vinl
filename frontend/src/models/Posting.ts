@@ -1,6 +1,7 @@
 export default class Posting {
     id: string;
     transactionId: string;
+    acountId: string;
     name: string;
     amount: string;
     comment: string;
@@ -9,6 +10,7 @@ export default class Posting {
     constructor(
         id: string,
         transactionId: string,
+        accountId: string,
         name: string,
         amount: string,
         comment: string,
@@ -16,6 +18,7 @@ export default class Posting {
     ) {
         this.id = id;
         this.transactionId = transactionId;
+        this.acountId = accountId;
         this.name = name;
         this.amount = amount;
         this.comment = comment;
