@@ -116,13 +116,13 @@ const FormDialog: React.FC<Props> = ({ saveTransaction }) => {
                   <Select
                     id="outlined-adornment-name"
                     label="Name"
-                    {...register(`postings.${index}.name` as const, {
+                    {...register(`postings.${index}.accountid` as const, {
                       required: true
                     })}
-                    className={errors?.postings?.[index]?.name ? "error" : ""}
+                    className={errors?.postings?.[index]?.accountid ? "error" : ""}
                     defaultValue={field.name}
                   >
-                    {accounts.map(({ name }) => (<MenuItem value={name}>{name}</MenuItem>))}
+                    {accounts.map(({ id, name }) => (<MenuItem key={id} value={id}>{name}</MenuItem>))}
                   </Select>
                 </FormControl>
                 <FormControl fullWidth sx={{ m: 1 }}>
@@ -165,6 +165,7 @@ const FormDialog: React.FC<Props> = ({ saveTransaction }) => {
         <Button
           onClick={() =>
             append({
+              accountid: "",
               name: "",
               amount: "",
               comment: "",
