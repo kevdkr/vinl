@@ -5,7 +5,7 @@ export async function getAccounts(): Promise<Account[]> {
     try {
         const response = await fetch(Api.url + "accounts");
         return await response.json();
-    } catch(error) {
+    } catch (error) {
         return [];
     }
 }
@@ -17,13 +17,13 @@ export function deleteAccount(id: string): Promise<Response> {
 }
 
 export type AccountFormValues = {
-  name: string;
+    name: string;
 };
 
 export async function createAccount(formData: AccountFormValues): Promise<Response> {
-    const response = await fetch(Api.url +'accounts', {
+    const response = await fetch(Api.url + 'accounts', {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
     })
     return response;

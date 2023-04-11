@@ -1,15 +1,9 @@
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
-import React, { useState, useEffect } from 'react';
 import { DialogContent } from '@mui/material';
+import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
+import React, { useState } from 'react';
 import FileUploadService from "../services/FileUploadService";
 
 export default function FileUpload() {
@@ -30,25 +24,25 @@ export default function FileUpload() {
     };
 
     const handleSubmit = () => {
-      if (!files) return;
-      FileUploadService.saveTransactionsFromFile(files);
-      handleClose();
+        if (!files) return;
+        FileUploadService.saveTransactionsFromFile(files);
+        handleClose();
     };
 
     return (
-      <div>
-      <Button onClick={handleClickOpen}>
-        <FileUploadIcon />
-      </Button>
+        <div>
+            <Button onClick={handleClickOpen}>
+                <FileUploadIcon />
+            </Button>
 
-          <Dialog open={open} onClose={handleClose}>
-            <DialogTitle>Upload a Ledger file</DialogTitle>
-            <DialogContent>
+            <Dialog open={open} onClose={handleClose}>
+                <DialogTitle>Upload a Ledger file</DialogTitle>
+                <DialogContent>
 
-          <input type="file" onChange={handleFileInput}/>
-          <Button onClick={handleSubmit}>Submit</Button>
-          </DialogContent>
-          </Dialog>
-          </div>
+                    <input type="file" onChange={handleFileInput} />
+                    <Button onClick={handleSubmit}>Submit</Button>
+                </DialogContent>
+            </Dialog>
+        </div>
     );
 }

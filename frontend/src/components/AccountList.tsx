@@ -1,10 +1,10 @@
-import Account from '../models/Account'
-import AccountItem from './AccountItem'
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import Account from '../models/Account';
+import AccountItem from './AccountItem';
 
 import List from '@mui/material/List';
-import { getAccounts, createAccount, deleteAccount, AccountFormValues } from '../services/Accounts'
-import FormAccountDialog from "./AddAccountFormDialog"
+import { AccountFormValues, createAccount, deleteAccount, getAccounts } from '../services/Accounts';
+import FormAccountDialog from "./AddAccountFormDialog";
 
 const AccountList: React.FC = () => {
 
@@ -45,9 +45,9 @@ const AccountList: React.FC = () => {
                     <AccountItem
                         key={account.id}
                         account={account}
-                        deleteAccount={handleDeleteAccount}/>)}
+                        deleteAccount={handleDeleteAccount} />)}
             </List>
-            <FormAccountDialog saveAccount={handleSaveAccount}/>
+            <FormAccountDialog saveAccount={handleSaveAccount} />
         </div>
     )
 };
