@@ -1,5 +1,5 @@
 # Vinl
-Vinl is a double-entry accounting web application inspired by (ledger-cli)[https://www.ledger-cli.org/] written in Go and React
+Vinl is a double-entry accounting web application inspired by [ledger-cli](https://www.ledger-cli.org/) written in Go and React
 
 # Local development
 `cd deployments`
