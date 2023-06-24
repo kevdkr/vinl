@@ -17,14 +17,14 @@ func NewPostgresAccountStorage(db *sql.DB) *PostgresAccountStorage {
 	return &PostgresAccountStorage{db: db}
 }
 
-func (storage *PostgresAccountStorage) CreateAccount(a *models.Account) (error) {
+func (storage *PostgresAccountStorage) CreateAccount(a *models.Account) (uuid.UUID, error) {
 	accountQuery := "INSERT INTO accounts (name) VALUES ($1) RETURNING id"
 	var accountId uuid.UUID
 	err := storage.db.QueryRow(accountQuery, a.Name).Scan(&accountId)
 	if err != nil {
-		return fmt.Errorf("Error inserting account into database: ", err)
+		return uuid.Nil, fmt.Errorf("Error inserting account into database: ", err)
 	}
-	return nil
+	return accountId, nil
 }
 
 func (storage *PostgresAccountStorage) GetAccounts() (*[]models.Account, error) {
