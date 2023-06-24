@@ -4,9 +4,12 @@ import (
 	"bufio"
 	"bytes"
 	"errors"
+	"fmt"
 	"io"
 	"vinl/internal/models"
 	"vinl/internal/storage"
+
+	"github.com/google/uuid"
 )
 
 type AccountService struct {
@@ -43,13 +46,17 @@ func (s *AccountService) GetAccounts() (*[]models.Account, error) {
 	return accounts, nil
 }
 
-func (s *AccountService) CreateAccount(a *models.Account) error {
-	return s.storage.CreateAccount(a)
+func (s *AccountService) CreateAccount(a *models.Account) (uuid.UUID, error) {
+	accountId, err := s.storage.CreateAccount(a)
+	if err != nil {
+		return uuid.Nil, fmt.Errorf("Error creating account %q: %q", a.Name, err)
+	}
+	return accountId, nil
 }
 
 func (s *AccountService) CreateAccounts(accounts *[]models.Account) error {
 	for _, a := range *accounts {
-		err := s.CreateAccount(&a)
+		_, err := s.CreateAccount(&a)
 		if err != nil {
 			return err
 		}
