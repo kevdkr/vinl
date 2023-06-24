@@ -25,6 +25,14 @@ func (s *AccountService) GetAccountById(id string) (*models.Account, error) {
 	return account, nil
 }
 
+func (s *AccountService) GetAccountByName(name string) (*models.Account, error) {
+	account, err := s.storage.GetAccountByName(name)
+	if err != nil {
+		return nil, err
+	}
+	return account, nil
+}
+
 func (s *AccountService) GetAccounts() (*[]models.Account, error) {
 
 	accounts, err := s.storage.GetAccounts()
