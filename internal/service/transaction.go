@@ -41,6 +41,19 @@ func (s *TransactionService) GetTransactions() (*models.Transactions, error) {
 }
 
 func (s *TransactionService) CreateTransaction(t *models.Transaction) error {
+	for i, posting := range t.Postings {
+		account, err := s.accountService.GetAccountByName(posting.Account.Name)
+		if err != nil {
+			log.Printf("%v", fmt.Errorf("Error finding account with name %q from accounts table: %q therefore creating the account instead...", posting.Account.Name, err))
+			t.Postings[i].Account.Id, err = s.accountService.CreateAccount(&posting.Account)
+			if err != nil {
+				log.Printf("%v", fmt.Errorf("Error creating account %q: %q", posting.Account.Name, err))
+			}
+		} else {
+			log.Printf("%v", &account.Id)
+			t.Postings[i].Account.Id = account.Id
+		}
+	}
 	return s.storage.CreateTransaction(t)
 }
 
