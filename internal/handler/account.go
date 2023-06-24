@@ -38,7 +38,7 @@ func (h *AccountHandler) HandleAddAccount() http.HandlerFunc {
 		if err != nil {
 			log.Printf("Error unmarshalling json: %s", err)
 		}
-		err = h.service.CreateAccount(&a)
+		_, err = h.service.CreateAccount(&a)
 		if err != nil {
 			log.Printf("error saving account")
 			return
