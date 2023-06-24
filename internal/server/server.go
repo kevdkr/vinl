@@ -38,11 +38,11 @@ func (s *Server) Initialize(host string, port string, user string, password stri
 	s.router = mux.NewRouter()
 	//s.routes()
 
-	transactionStorage := postgres.NewPostgresTransactionStorage(s.db)
-	transactionService := service.NewTransactionService(transactionStorage)
-	s.registerTransactionRoutes(transactionService)
 	accountStorage := postgres.NewPostgresAccountStorage(s.db)
 	accountService := service.NewAccountService(accountStorage)
+	transactionStorage := postgres.NewPostgresTransactionStorage(s.db)
+	transactionService := service.NewTransactionService(transactionStorage, accountService)
+	s.registerTransactionRoutes(transactionService)
 	s.registerAccountRoutes(accountService)
 }
 
