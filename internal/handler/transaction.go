@@ -3,6 +3,7 @@ package handler
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"log"
@@ -40,7 +41,8 @@ func (h *TransactionHandler) HandleAddTransaction() http.HandlerFunc {
 		}
 		err = h.service.CreateTransaction(&t)
 		if err != nil {
-			log.Printf("error saving transaction")
+			//log.Printf("error saving transaction")
+			log.Printf("%v", fmt.Errorf("Error saving transaction %q: %q", t.Payee, err))
 			return
 		}
 
