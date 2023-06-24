@@ -3,6 +3,7 @@ package service
 import (
 	"bufio"
 	"bytes"
+	"fmt"
 	"io"
 	"log"
 	"os"
@@ -14,10 +15,11 @@ import (
 
 type TransactionService struct {
 	storage storage.TransactionStorage
+	accountService AccountService
 }
 
-func NewTransactionService(transactionStorage storage.TransactionStorage) *TransactionService {
-	return &TransactionService{transactionStorage}
+func NewTransactionService(transactionStorage storage.TransactionStorage, accountService *AccountService) *TransactionService {
+	return &TransactionService{transactionStorage, *accountService}
 }
 
 func (s *TransactionService) GetTransactionById(id string) (*models.Transaction, error) {
