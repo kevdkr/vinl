@@ -114,7 +114,7 @@ const FormDialog: React.FC<Props> = ({ saveTransaction }) => {
                                     <section className={"section"} key={field.id}>
                                         <FormControl fullWidth sx={{ m: 1 }}>
                                             <InputLabel htmlFor="outlined-adornment-name">Name</InputLabel>
-                                            <Select
+                                            {/* <Select
                                                 id="outlined-adornment-name"
                                                 label="Name"
                                                 {...register(`postings.${index}.account.id` as const, {
@@ -124,7 +124,19 @@ const FormDialog: React.FC<Props> = ({ saveTransaction }) => {
                                                 defaultValue={field.account.name}
                                             >
                                                 {accounts.map(({ id, name }) => (<MenuItem key={id} value={id}>{name}</MenuItem>))}
-                                            </Select>
+                                            </Select> */}
+
+                                            <OutlinedInput
+                                                id="outlined-adornment-name"
+                                                label="Name"
+                                                {...register(`postings.${index}.account.name` as const, {
+                                                    required: true
+                                                })}
+                                                className={errors?.postings?.[index]?.account?.name ? "error" : ""}
+                                                defaultValue={field.account.name}
+                                            />
+                                            {/* {accounts.map(({ id, name }) => (<MenuItem key={id} value={id}>{name}</MenuItem>))}
+                                            </Select> */}
                                         </FormControl>
                                         <FormControl fullWidth sx={{ m: 1 }}>
                                             <InputLabel htmlFor="outlined-adornment-amount">Amount</InputLabel>
