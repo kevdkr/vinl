@@ -57,7 +57,7 @@ func (storage *PostgresAccountStorage) GetAccounts() (*[]models.Account, error) 
 }
 
 func (storage *PostgresAccountStorage) GetAccountById(id string) (*models.Account, error) {
-	accountQuery := "SELECT id, name FROM account WHERE id = $1"
+	accountQuery := "SELECT id, name FROM accounts WHERE id = $1"
 	accountRow := storage.db.QueryRow(accountQuery, id)
 	var a *models.Account
 	var accountid uuid.UUID
@@ -69,6 +69,23 @@ func (storage *PostgresAccountStorage) GetAccountById(id string) (*models.Accoun
 	a = &models.Account{
 		Id: accountid,
 		Name: name,
+	}
+	return a, nil
+}
+
+func (storage *PostgresAccountStorage) GetAccountByName(name string) (*models.Account, error) {
+	accountQuery := "SELECT id, name FROM accounts WHERE name = $1"
+	accountRow := storage.db.QueryRow(accountQuery, name)
+	var a *models.Account
+	var accountname string
+	var accountid uuid.UUID
+	err := accountRow.Scan(&accountid, &accountname)
+	if err != nil {
+		return nil, fmt.Errorf("Error scanning account row onto vars: %q", err)
+	}
+	a = &models.Account{
+		Id: accountid,
+		Name: accountname,
 	}
 	return a, nil
 }
