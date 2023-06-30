@@ -3,10 +3,12 @@ import ReceiptIcon from '@mui/icons-material/Receipt';
 import { Paper } from '@mui/material';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
+import { Link, useNavigate } from 'react-router-dom';
 import * as React from 'react';
 
 export default function BottomNav() {
     const [value, setValue] = React.useState("");
+    const navigate=useNavigate();
 
     return (
 
@@ -18,8 +20,8 @@ export default function BottomNav() {
                     setValue(newValue);
                 }}
             >
-                <BottomNavigationAction label="Transactions" icon={<ReceiptIcon />} />
-                <BottomNavigationAction label="Accounts" icon={<AccountBalanceIcon />} />
+                <BottomNavigationAction label="Transactions" value={value} icon={<ReceiptIcon />} onClick={() => navigate("/transactions")} />
+                <BottomNavigationAction label="Accounts" value={value} icon={<AccountBalanceIcon />} onClick={() => navigate("/accounts")} />
             </BottomNavigation>
         </Paper>
     );
