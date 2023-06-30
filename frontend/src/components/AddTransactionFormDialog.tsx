@@ -19,6 +19,7 @@ import Account from "../models/Account";
 import Transaction from '../models/Transaction';
 import { getAccounts } from '../services/Accounts';
 import { TransactionFormValues } from '../services/Transactions';
+import { Autocomplete, TextField } from "@mui/material";
 
 const fabStyle = {
     position: 'fixed',
@@ -113,20 +114,19 @@ const FormDialog: React.FC<Props> = ({ saveTransaction }) => {
                                     Posting
                                     <section className={"section"} key={field.id}>
                                         <FormControl fullWidth sx={{ m: 1 }}>
-                                            <InputLabel htmlFor="outlined-adornment-name">Name</InputLabel>
-                                            {/* <Select
-                                                id="outlined-adornment-name"
+                                            {/* <InputLabel htmlFor="outlined-adornment-name">Name</InputLabel> */}
+                                            {/* <Select id="outlined-adornment-name"
                                                 label="Name"
                                                 {...register(`postings.${index}.account.id` as const, {
                                                     required: true
                                                 })}
-                                                className={errors?.postings?.[index]?.account?.id ? "error" : ""}
+                                                className={errors?.postings?.[index]?.account?.name ? "error" : ""}
                                                 defaultValue={field.account.name}
                                             >
-                                                {accounts.map(({ id, name }) => (<MenuItem key={id} value={id}>{name}</MenuItem>))}
-                                            </Select> */}
-
-                                            <OutlinedInput
+                                                {accounts.map(({ id, name }) => (<MenuItem key={id} value={name}>{name}</MenuItem>))}
+                                            </Select>
+ */}
+                                            {/* <OutlinedInput
                                                 id="outlined-adornment-name"
                                                 label="Name"
                                                 {...register(`postings.${index}.account.name` as const, {
@@ -134,7 +134,34 @@ const FormDialog: React.FC<Props> = ({ saveTransaction }) => {
                                                 })}
                                                 className={errors?.postings?.[index]?.account?.name ? "error" : ""}
                                                 defaultValue={field.account.name}
+                                            /> */}
+                                            {/* <Autocomplete
+                                                value={accountName}
+                                                inputValue={accountName}
+                                                freeSolo
+                                                onInputChange={(e, v) => {
+                                                    setAccountName(v)
+                                                    console.log(v)
+                                                }}
+                                                id="outlined-adornment-name"
+                                                options={accounts.map((account) => (account.name))}
+                                                renderInput={(params) => <TextField onSubmit={() => console.log('sup')} {...params} label="Name" />}
+                                                {...register(`postings.${index}.account.name` as const, {
+                                                    required: true,
+                                                })}
+                                                className={errors?.postings?.[index]?.account?.name ? "error" : ""}
+                                                defaultValue={accountName}
+                                            /> */}
+                                            <input type="text" list="accounts"
+                                                {...register(`postings.${index}.account.name` as const, {
+                                                    required: true
+                                                })}
+                                                className={errors?.postings?.[index]?.account?.name ? "error" : ""}
+                                                defaultValue={field.account.name}
                                             />
+                                            <datalist id="accounts">
+                                                {accounts.map(({ id, name }) => (<option key={id} value={name}>{name}</option>))}
+                                            </datalist>
                                             {/* {accounts.map(({ id, name }) => (<MenuItem key={id} value={id}>{name}</MenuItem>))}
                                             </Select> */}
                                         </FormControl>
