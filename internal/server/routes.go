@@ -37,3 +37,17 @@ func (s *Server) registerAccountRoutes(accountService *service.AccountService) {
 	s.router.HandleFunc("/accounts/tofile", accountHandler.HandleWriteAccountsToFile()).Methods(http.MethodGet)
 	s.router.HandleFunc("/accounts/uploadfile", accountHandler.HandleReadAccountsFromFile()).Methods(http.MethodPost)
 }
+
+func (s *Server) registerPostingRoutes(postingService *service.PostingService) {
+	postingHandler := handler.NewPostingHandler(postingService)
+
+	s.router.HandleFunc("/postings", postingHandler.HandleGetPostings()).Methods(http.MethodGet)
+	s.router.HandleFunc("/postings/transaction/{id}", postingHandler.HandleGetPostingsByTransactionId()).Methods(http.MethodGet)
+	s.router.HandleFunc("/postings/account/{id}", postingHandler.HandleGetPostingsByAccountId()).Methods(http.MethodGet)
+}
+
+func (s *Server) registerBalanceRoutes(balanceService *service.BalanceService) {
+	balanceHandler := handler.NewBalanceHandler(balanceService)
+
+	s.router.HandleFunc("/balance/{id}", balanceHandler.HandleGetBalanceOfAccount()).Methods(http.MethodGet)
+}
