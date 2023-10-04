@@ -20,3 +20,9 @@ type AccountStorage interface {
 	CreateAccount(account *models.Account) (uuid.UUID, error)
 	DeleteAccountById(id string) error
 }
+
+type PostingStorage interface {
+	GetPostings() (*[]models.Posting, error)
+	GetPostingsByTransactionId(id string) (*[]models.Posting, error)
+	GetPostingsByAccountId(id string) (*[]models.Posting, error)
+}
