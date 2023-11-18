@@ -44,7 +44,7 @@ func (s *Server) Initialize(host string, port string, user string, password stri
 	postingService := service.NewPostingService(postingStorage)
 	transactionStorage := postgres.NewPostgresTransactionStorage(s.db)
 	transactionService := service.NewTransactionService(transactionStorage, accountService)
-	balanceService := service.NewBalanceService(postingService)
+	balanceService := service.NewBalanceService(postingService, accountService)
 	s.registerTransactionRoutes(transactionService)
 	s.registerAccountRoutes(accountService)
 	s.registerPostingRoutes(postingService)
