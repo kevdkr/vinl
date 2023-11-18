@@ -8,10 +8,11 @@ import (
 
 type BalanceService struct {
 	postingService PostingService
+	accountService AccountService
 }
 
-func NewBalanceService(postingService *PostingService) *BalanceService {
-	return &BalanceService{*postingService}
+func NewBalanceService(postingService *PostingService, accountService *AccountService) *BalanceService {
+	return &BalanceService{*postingService, *accountService}
 }
 
 func separateDollarsCents(currency string) (int64, int64, error) {
@@ -105,8 +106,23 @@ func (s *BalanceService) GetTotalDollarsOfAccount(id string) (string, error) {
 	}
 
 	return dollarsString+"."+centsString, nil
+}
 
+func (s *BalanceService) GetTotalDollarsOfAccounts() ([]string, error) {
+	accounts, err := s.accountService.GetAccounts()
+	if err != nil {
+		return nil, err
+	}
 
+	var balances []string
+	for _, account := range *accounts {
+		balance, err := s.GetTotalDollarsOfAccount(account.Id.String())
+		if err != nil {
+			return nil, err
+		}
+		balances = append(balances, balance)
+	}
+	return balances, nil
 }
 
 // func (s *TransactionService) GetBalanceOfAccount(id string) (float32, error) {
