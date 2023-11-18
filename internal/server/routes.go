@@ -50,4 +50,5 @@ func (s *Server) registerBalanceRoutes(balanceService *service.BalanceService) {
 	balanceHandler := handler.NewBalanceHandler(balanceService)
 
 	s.router.HandleFunc("/balance/{id}", balanceHandler.HandleGetBalanceOfAccount()).Methods(http.MethodGet)
+	s.router.HandleFunc("/balances", balanceHandler.HandleGetBalanceOfAccounts()).Methods(http.MethodGet)
 }
